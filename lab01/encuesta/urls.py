@@ -8,5 +8,5 @@ urlpatterns=[
     #localhots:8000/polls/6/results
     path('<int:pregunta_id>/results', views.resultados,name='results'),
     #localhots:8000/polls/6/vote
-    path('<int:pregunta_id>/vote/', views.votar,name='vote'),
+    path('<int:pregunta_id>/vote/', views.votar,name='vote'), 
 ]
