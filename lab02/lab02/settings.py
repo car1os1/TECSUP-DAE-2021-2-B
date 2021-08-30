@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'calculadora.apps.CalculadoraConfig',
     'encuesta.apps.EncuestaConfig',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,0 +1,7 @@
+<h2>bienvenido</h2>
+<form action="{% url 'calculadora:respuesta' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="n1"><br>
+    <input type="text" name="n2"><br>
+    <input type="submit" name="calcular">
+</form>
