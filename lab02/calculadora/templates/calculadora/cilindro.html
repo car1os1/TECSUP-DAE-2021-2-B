@@ -1,0 +1,9 @@
+<h2>volumen del cilindro</h2>
+<form action="{% url 'calculadora:rpta' %}" method="POST">
+    {% csrf_token %}
+    <p>Digite el radio</p>
+    <input type="text" name="radio"><br>
+    <p>Digite la altura</p>
+    <input type="text" name="altura">
+    <input type="submit" name="calcular" >
+</form>
