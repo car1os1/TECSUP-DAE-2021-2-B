@@ -1,4 +1,4 @@
-"""lab02 URL Configuration
+"""lab03 URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -13,13 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django import urls
 from django.contrib import admin
 from django.urls import include,path
 
-
 urlpatterns = [
-    path('encuesta/',include('encuesta.urls')),
-    path('calculadora/',include('calculadora.urls')),
+    path('encuesta/', include('encuesta.urls')),
     path('admin/', admin.site.urls),
+    
 ]
