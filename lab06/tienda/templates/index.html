@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+ 
 <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -25,8 +26,15 @@
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
-  </div>
-
+    {% block bar %}
+      </div>
+      {% for categoria in categoria_list %}
+        <h1 class="my-4">Shop</h1>
+         <div class="list-group">
+            <a href="categoria/{{ categoria.id }}/" class="list-group-item">{{ categoria.nombre }}</a>
+        </div>
+      {% endfor %}
+    {% endblock %}
   <div class="row">
     {% for prod in product_list %}
     <div class="col-lg-4 col-md-6 mb-4">
