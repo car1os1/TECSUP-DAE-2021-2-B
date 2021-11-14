@@ -11,67 +11,69 @@ class App extends Component {
   constructor(props) {
       super(props);
       this.state =({
-        series:[],
+        prestamo:[],
         pos:null,
         titulo:'Nuevo',
         id:0,
-        nombre:'',
-        fecha:'',
-        rating:'0',
+        codigo:'',
+        libro:'',
+        fechainicio:'',
+        fechafin:'',
         categoria:''
       })
-      this.cambioNombre = this.cambioNombre.bind(this);
-      this.cambioFecha = this.cambioFecha.bind(this);
-      this.cambioRating = this.cambioRating.bind(this);
-      this.cambioCategoria = this.cambioCategoria.bind(this);
+      this.cambioLibro = this.cambioLibro.bind(this);
+      this.cambioFechaInicio = this.cambioFechaInicio.bind(this);
+      this.cambioFechaFin = this.cambioFechaFin.bind(this);
+      this.cambiocategoria = this.cambiocategoria.bind(this);
       this.mostrar = this.mostrar.bind(this);
       this.eliminar = this.eliminar.bind(this);
       this.guardar = this.guardar.bind(this);
     
     }  
     componentDidMount(){
-      axios.get('https://car1os-api.herokuapp.com/series/')
+      axios.get('http://127.0.0.1:8000/prestamos')
       .then(res=> {
         this.setState({series:res.data})
       })
     }
 
 
-    cambioNombre(e){
+    cambioLibro(e){
       this.setState({
-        nombre : e.target.value
+        libro : e.target.value
       })
     }
   
-    cambioFecha(e){
+    cambioFechaInicio(e){
       this.setState({
-        fecha : e.target.value
+        fechainicio : e.target.value
+      })
+    }
+
+    cambioFechaFin(e){
+      this.setState({
+        fechafin : e.target.value
       })
     }
   
-    cambioCategoria(e){
+  
+    cambiocategoria(e){
       this.setState({
         categoria : e.target.value
       })
     }
   
-    cambioRating(e){
-      this.setState({
-        rating : e.target.value
-      })
-    }
-  
 
     mostrar(cod,index){
-      axios.get('https://car1os-api.herokuapp.com/series/'+cod)
+      axios.get('http://127.0.0.1:8000/prestamos'+cod)
       .then(res => {
         this.setState({
           pos: index,
           titulo: 'Editar',
           id: res.data.id,
-          nombre :res.data.name,
-          fecha: res.data.release_date,
-          rating: res.data.rating,
+          libro :res.data.name,
+          fechainicio: res.data.release_date,
+          fechafin: res.data.release_date,
           categoria : res.data.category
         })
       })
@@ -81,44 +83,44 @@ class App extends Component {
       e.preventDefault();
       let cod = this.state.id;
       const datos = {
-        name: this.state.nombre,
-        release_date: this.state.fecha,
-        rating: this.state.rating,
+        libro: this.state.nombre,
+        fechainicio: this.state.fecha,
+        fechafin: this.state.fecha,
         category: this.state.categoria
       }
       if(cod>0){
         //edición de un registro
-        axios.put('https://car1os-api.herokuapp.com/series/'+cod,datos)
+        axios.put('http://127.0.0.1:8000/prestamos'+cod,datos)
         .then(res =>{
           let indx = this.state.pos;
-          this.state.series[indx] = res.data;
-          var temp = this.state.series;
+          this.state.prestamo[indx] = res.data;
+          var temp = this.state.prestamos;
           this.setState({
             pos:null,
             titulo:'Nuevo',
             id:0,
-            nombre:'',
-            fecha:'',
-            rating:0,
+            libro:'',
+            fechainicio:'',
+            fechafin:'',
             categoria:'',
-            series: temp
+            prestamos: temp
           });
         }).catch((error) =>{
           console.log(error.toString());
         });
       }else{
         //nuevo registro
-        axios.post('https://car1os-api.herokuapp.com/series/',datos)
+        axios.post('http://127.0.0.1:8000/prestamos',datos)
         .then(res => {
           this.state.series.push(res.data);
           var temp = this.state.series;
           this.setState({
             id:0,
-            nombre:'',
-            fecha: '',
-            rating:0,
+            libro:'',
+            fechainicio: '',
+            fechafin: '',
             categoria:'',
-            series:temp
+            prestamos:temp
           });
         }).catch((error)=>{
           console.log(error.toString());
@@ -129,11 +131,11 @@ class App extends Component {
     eliminar(cod){
       let rpta = window.confirm("Desea Eliminar?");
       if(rpta){
-        axios.delete('https://car1os-api.herokuapp.com/series/'+cod)
+        axios.delete('http://127.0.0.1:8000/prestamos'+cod)
         .then(res =>{
-          var temp = this.state.series.filter((serie)=>serie.id !== cod);
+          var temp = this.state.prestamos.filter((prestamo)=>prestamo.id !== cod);
           this.setState({
-            series: temp
+            prestamos: temp
           })
         })
       }
@@ -146,24 +148,24 @@ class App extends Component {
           <Table striped bordered hover variant="dark">
           <thead>
             <tr>
-              <th>Nombre</th>
-              <th>Fecha</th>
-              <th>Rating</th>
+              <th>nombre del libro</th>
+              <th>Fecha de prestamo</th>
+              <th>fecha de devolucion</th>
               <th>Categoria</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {this.state.series.map((serie,index) =>{
+            {this.state.prestamo.map((prestamo,index) =>{
               return (
-                <tr key={serie.id}>
-                  <td>{serie.name}</td>
-                  <td>{serie.release_date}</td>
-                  <td>{serie.rating}</td>
-                  <td>{serie.category}</td>
+                <tr key={prestamo.id}>
+                  <td>{prestamo.libro}</td>
+                  <td>{prestamo.fechapre}</td>
+                  <td>{prestamo.fechadev}</td>
+                  <td>{prestamo.category}</td>
                   <td>
-                  <Button variant="success" onClick={()=>this.mostrar(serie.id,index)}>Editar</Button>
-                  <Button variant="danger" onClick={()=>this.eliminar(serie.id,index)}>Eliminar</Button>
+                  <Button variant="success" onClick={()=>this.mostrar(prestamo.id,index)}>Editar</Button>
+                  <Button variant="danger" onClick={()=>this.eliminar(prestamo.id,index)}>Eliminar</Button>
                   </td>
                 </tr>
               )
@@ -175,20 +177,22 @@ class App extends Component {
         <Form onSubmit={this.guardar}>
             <input type="hidden" value={this.state.id} />
             <Form.Group className="mb-3">
-              <Form.Label>Nombre</Form.Label>
-              <Form.Control type="text" value={this.state.nombre} onChange={this.cambioNombre} />
+              <Form.Label>Nombre del libro</Form.Label>
+              <Form.Control type="text" value={this.state.libro} onChange={this.cambioLibro} />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Rating</Form.Label>
-              <Form.Control type="text" value={this.state.rating} onChange={this.cambioRating} />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Categoria</Form.Label>
-              <Form.Control type="text" value={this.state.categoria} onChange={this.cambioCategoria} />
+              <Form.Control type="text" value={this.state.categoria} onChange={this.cambiocategoria} />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Fecha</Form.Label>
-              <Form.Control type="date" value={this.state.fecha} onChange={this.cambioFecha} />
+              <Form.Label>Fecha prestamo</Form.Label>
+              <Form.Control type="date" value={this.state.fechainicio} onChange={this.cambioFechaInicio} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Fecha de devolucion</Form.Label>
+              <Form.Control type="date" value={this.state.fechafin} onChange={this.cambioFechaFin} />
             </Form.Group>
             <Button variant="primary" type="submit">
               Guardar
